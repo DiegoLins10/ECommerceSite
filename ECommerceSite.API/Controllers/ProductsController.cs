@@ -1,4 +1,5 @@
-﻿using ECommerceSite.API.Persistence;
+﻿using ECommerceSite.API.Models;
+using ECommerceSite.API.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -23,7 +24,7 @@ namespace ECommerceSite.API.Controllers
             return Ok(products);
         }
 
-        // api/products/1
+        // api/products/{id}
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -35,6 +36,61 @@ namespace ECommerceSite.API.Controllers
             }
             return Ok(product);
             
+        }
+
+        [HttpPost("")]
+        public IActionResult Post([FromBody] ProductInputModel productInputModel)
+        {
+
+            if(productInputModel == null)
+            {
+                return BadRequest();
+            }
+
+            var prod = new Product(productInputModel.Description, productInputModel.Price);
+
+            _ecommerceDbContext.Products.Add(prod);
+            _ecommerceDbContext.SaveChanges();
+
+            return CreatedAtAction(nameof(GetById), new { id = prod.Id}, prod);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put([FromBody] ProductInputModel productInputModel, int id)
+        {
+            if(productInputModel == null)
+            {
+                return BadRequest();
+            }
+            var product = _ecommerceDbContext.Products.SingleOrDefault(p => p.Id == id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            product.Description = productInputModel.Description;
+            product.Price = productInputModel.Price;
+
+            _ecommerceDbContext.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete (int id)
+        {
+            var product = _ecommerceDbContext.Products.SingleOrDefault(p => p.Id == id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            _ecommerceDbContext.Products.Remove(product);
+            _ecommerceDbContext.SaveChanges();
+
+            return NoContent();
         }
     }
 }

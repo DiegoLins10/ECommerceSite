@@ -6,9 +6,8 @@
         public string Description { get; set; }
         public decimal Price { get; set; }
 
-        public Product(int id, string description, decimal price)
+        public Product(string description, decimal price)
         {
-            Id = id;
             Description = description;
             Price = price;
         }
