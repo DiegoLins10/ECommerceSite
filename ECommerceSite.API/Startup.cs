@@ -1,3 +1,4 @@
+using ECommerceSite.API.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceSite.API
 {
@@ -28,7 +30,8 @@ namespace ECommerceSite.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddDbContext<ECommerceDbContext>(options => options.UseInMemoryDatabase("EcommerceDb"));
+ 
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1",
