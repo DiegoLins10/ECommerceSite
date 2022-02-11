@@ -1,0 +1,18 @@
+1 - appsetting.json  set connection string
+
+2- set in configureservices:
+            services.AddDbContext<ECommerceDbContext>(options => 
+            options.UseSqlServer(Configuration.GetConnectionString("ProductDb")));
+
+3- install migration
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 3.0.3
+
+
+4- adiciona a migration
+Add-Migration Initial 
+
+
+5- atualiza o banco
+update-Database
+
+obs: tem que criar o banco antes

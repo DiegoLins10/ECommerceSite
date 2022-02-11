@@ -30,7 +30,11 @@ namespace ECommerceSite.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<ECommerceDbContext>(options => options.UseInMemoryDatabase("EcommerceDb"));
+
+
+            //services.AddDbContext<ECommerceDbContext>(options => options.UseInMemoryDatabase("EcommerceDb"));
+            services.AddDbContext<ECommerceDbContext>(options => 
+            options.UseSqlServer(Configuration.GetConnectionString("ProductDb")));
  
             services.AddSwaggerGen(options =>
             {
